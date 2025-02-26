@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем код приложения
 COPY . .
 
-EXPOSE 8000
+# Устанавливаем рабочую директорию для скриптов
+WORKDIR /app
 
-# Команда для запуска приложения
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] 
+EXPOSE 8000 

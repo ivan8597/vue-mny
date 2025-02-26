@@ -23,7 +23,7 @@ def create_transaction(
     return db_transaction
 
 @router.get("/transactions/", response_model=List[schemas.Transaction]) # получение транзакций
-def read_transactions( # получение транзакций
+def read_transactions( 
     skip: int = 0, # пропуск
     limit: int = 100, # лимит
     user_id: int = None, # id пользователя

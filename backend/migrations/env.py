@@ -10,6 +10,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src.models.models import Base
+from src.database.database import DATABASE_URL
 
 # это объект конфигурации Alembic, который обеспечивает
 # доступ к значениям используемого .ini файла
@@ -25,6 +26,7 @@ target_metadata = Base.metadata
 
 #
 
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 def run_migrations_offline() -> None:
     """Запуск миграций в 'оффлайн' режиме.

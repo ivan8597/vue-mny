@@ -27,7 +27,7 @@ class Category(CategoryBase): # категория
     id: int # id
     
     class Config: # конфигурация
-        from_attributes = True # извлекать атрибуты
+        from_attributes = True # извлекаем атрибуты
 
 class TransactionBase(BaseModel): # транзакция
     amount: float # сумма
@@ -44,4 +44,4 @@ class Transaction(TransactionBase): # транзакция
     user_id: int # id пользователя
     
     class Config: # конфигурация
-        from_attributes = True # извлекать атрибуты
+        from_attributes = True # извлекаем атрибуты

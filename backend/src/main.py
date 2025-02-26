@@ -1,6 +1,6 @@
 from fastapi import FastAPI 
 from fastapi.middleware.cors import CORSMiddleware # cors
-from .routes import transactions # транзакции
+from .routes import transactions, categories, users # импорт роутов
 
 app = FastAPI(title="Finance API") # приложение
 
@@ -14,6 +14,8 @@ app.add_middleware( # добавление middleware
 )
 
 app.include_router(transactions.router, prefix="/api/v1") # включение маршрутов
+app.include_router(categories.router, prefix="/api/v1") # включение маршрутов категорий
+app.include_router(users.router, prefix="/api/v1") # включение маршрутов пользователей
 
 @app.get("/") # корневой маршрут
 async def root(): # корневой маршрут
