@@ -1,40 +1,40 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enum
-from sqlalchemy.orm import relationship
-from datetime import datetime
-import enum
-from ..database.database import Base
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enum # колонки
+from sqlalchemy.orm import relationship # отношения
+from datetime import datetime # дата и время
+import enum # перечисление
+from ..database.database import Base # база данных
 
-class TransactionType(enum.Enum):
-    INCOME = "income"
-    EXPENSE = "expense"
+class TransactionType(enum.Enum): # тип транзакции
+    INCOME = "income" # доход
+    EXPENSE = "expense" # расход
 
-class User(Base):
-    __tablename__ = "users"
+class User(Base): # пользователь
+    __tablename__ = "users" # имя таблицы
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    name = Column(String)
-    transactions = relationship("Transaction", back_populates="user")
+    id = Column(Integer, primary_key=True, index=True) # id
+    email = Column(String, unique=True, index=True) # email
+    hashed_password = Column(String) # хэшированный пароль
+    name = Column(String) # имя
+    transactions = relationship("Transaction", back_populates="user") # транзакции
 
-class Category(Base):
-    __tablename__ = "categories"
+class Category(Base): # категория
+    __tablename__ = "categories" # имя таблицы
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
-    type = Column(Enum(TransactionType))
-    transactions = relationship("Transaction", back_populates="category")
+    id = Column(Integer, primary_key=True, index=True) # id
+    name = Column(String, unique=True) # имя
+    type = Column(Enum(TransactionType)) # тип
+    transactions = relationship("Transaction", back_populates="category") # транзакции
 
-class Transaction(Base):
-    __tablename__ = "transactions"
+class Transaction(Base): # транзакция
+    __tablename__ = "transactions" # имя таблицы
 
-    id = Column(Integer, primary_key=True, index=True)
-    amount = Column(Float)
-    type = Column(Enum(TransactionType))
-    description = Column(String)
-    date = Column(DateTime, default=datetime.utcnow)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    category_id = Column(Integer, ForeignKey("categories.id"))
+    id = Column(Integer, primary_key=True, index=True) # id
+    amount = Column(Float) # сумма
+    type = Column(Enum(TransactionType)) # тип
+    description = Column(String) # описание
+    date = Column(DateTime, default=datetime.utcnow) # дата
+    user_id = Column(Integer, ForeignKey("users.id")) # id пользователя
+    category_id = Column(Integer, ForeignKey("categories.id")) # id категории
 
-    user = relationship("User", back_populates="transactions")
-    category = relationship("Category", back_populates="transactions") 
+    user = relationship("User", back_populates="transactions") # пользователь
+    category = relationship("Category", back_populates="transactions") # категория
