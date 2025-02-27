@@ -9,8 +9,8 @@ from ..models import models
 from ..utils.auth import get_current_user
 
 router = APIRouter() 
-
-@router.post("/transactions/", response_model=schemas.Transaction) # создание транзакции
+# Создание транзакции
+@router.post("/transactions/", response_model=schemas.Transaction) 
 def create_transaction(
     transaction: schemas.TransactionCreate, # данные транзакции
     current_user: models.User = Depends(get_current_user), # текущий пользователь
@@ -46,8 +46,8 @@ def create_transaction(
     db.refresh(db_transaction) # обновляем объект из базы
     
     return db_transaction
-
-@router.get("/transactions/", response_model=List[schemas.Transaction]) # получение транзакций
+# Получение транзакций
+@router.get("/transactions/", response_model=List[schemas.Transaction]) 
 def get_transactions(
     current_user: models.User = Depends(get_current_user), # текущий пользователь
     db: Session = Depends(get_db), # база данных
@@ -72,7 +72,8 @@ def get_transactions(
     
     return query.order_by(models.Transaction.date.desc()).offset(skip).limit(limit).all() # возвращаем транзакции
 
-@router.get("/transactions/summary") # получение сводки по доходам/расходам
+# Получение сводки по доходам/расходам
+@router.get("/transactions/summary") 
 def get_transactions_summary(
     current_user: models.User = Depends(get_current_user), # текущий пользователь
     db: Session = Depends(get_db), # база данных
@@ -107,7 +108,8 @@ def get_transactions_summary(
     result["balance"] = result["income"] - result["expense"] # считаем баланс
     return result
 
-@router.get("/transactions/by_category") # получение сводки по категориям
+# Получение сводки по категориям
+@router.get("/transactions/by_category") 
 def get_transactions_by_category(
     current_user: models.User = Depends(get_current_user), # текущий пользователь
     db: Session = Depends(get_db), # база данных

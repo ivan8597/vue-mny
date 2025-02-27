@@ -16,6 +16,7 @@ from ..utils.auth import ( # импорт функций
 
 router = APIRouter()
 
+# Регистрация пользователя
 @router.post("/register", response_model=schemas.User) # регистрация пользователя
 def register_user(
     user: schemas.UserCreate,
@@ -42,6 +43,7 @@ def register_user(
     db.refresh(db_user) # обновление пользователя
     return db_user
 
+# Авторизация пользователя
 @router.post("/token") # авторизация пользователя
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(), # форма запроса
@@ -65,6 +67,7 @@ def login(
     )
     return {"access_token": access_token, "token_type": "bearer"} # возвращаем токен
 
+# Получение данных текущего пользователя
 @router.get("/users/me", response_model=schemas.User) # получение данных текущего пользователя
 def read_users_me(current_user: models.User = Depends(get_current_user)): # получение данных текущего пользователя
     """Получение данных текущего пользователя"""

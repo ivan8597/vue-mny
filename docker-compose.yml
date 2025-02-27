@@ -17,6 +17,18 @@ services:
       timeout: 5s   # Таймаут ожидания ответа
       retries: 5    # Количество попыток
 
+  # Frontend сервис
+  frontend:
+    build: ./frontend
+    container_name: vue_mny_frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
   # Сервис backend приложения
   backend:
     build: ./backend

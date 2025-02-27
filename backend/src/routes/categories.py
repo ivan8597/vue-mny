@@ -8,7 +8,8 @@ from ..utils.auth import get_current_user
 
 router = APIRouter() # роутер
 
-@router.post("/categories/", response_model=schemas.Category) # создание категории
+# Создание категории
+@router.post("/categories/", response_model=schemas.Category) 
 def create_category(
     category: schemas.CategoryCreate, # категория
     current_user: models.User = Depends(get_current_user),
@@ -21,7 +22,8 @@ def create_category(
     db.refresh(db_category) # обновление категории
     return db_category
 
-@router.get("/categories/", response_model=List[schemas.Category]) # получение категорий
+# Получение категорий
+@router.get("/categories/", response_model=List[schemas.Category]) 
 def read_categories(
     skip: int = 0, # пропуск
     limit: int = 100, # лимит
