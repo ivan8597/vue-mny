@@ -13,9 +13,9 @@ app.add_middleware( # добавление middleware
     allow_headers=["*"], # разрешение всех заголовков
 )
 
-app.include_router(transactions.router, prefix="/api/v1") # включение маршрутов
-app.include_router(categories.router, prefix="/api/v1") # включение маршрутов категорий
-app.include_router(users.router, prefix="/api/v1") # включение маршрутов пользователей
+app.include_router(transactions.router, prefix="/api") # включение маршрутов
+app.include_router(categories.router, prefix="/api") # включение маршрутов категорий
+app.include_router(users.router, prefix="/api/auth") # включение маршрутов пользователей
 
 @app.get("/") # корневой маршрут
 async def root(): # корневой маршрут

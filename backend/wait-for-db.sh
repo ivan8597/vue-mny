@@ -1,15 +1,24 @@
 #!/bin/bash
 
+# Останавливаем выполнение скрипта при любой ошибке
 set -e
 
+# Получаем хост базы данных из первого аргумента
 host="$1"
+# Сдвигаем аргументы влево
 shift
+# Получаем команду для выполнения из оставшихся аргументов
 cmd="$@"
 
-until PGPASSWORD=finance_password psql -h "$host" -U "finance_user" -d "finance_db" -c '\q'; do
-  >&2 echo "Postgres is unavailable - sleeping"
+# Цикл проверки доступности базы данных
+until PGPASSWORD=postgres psql -h "$host" -U "postgres" -d "finance_db" -c '\q'; do
+  # Выводим сообщение об ошибке в stderr
+  >&2 echo "Postgres недоступен - ожидание"
+  # Ждем 1 секунду перед следующей попыткой
   sleep 1
 done
 
->&2 echo "Postgres is up - executing command"
+# База данных доступна, выводим сообщение
+>&2 echo "Postgres запущен - выполняем команду"
+# Выполняем переданную команду
 exec $cmd 

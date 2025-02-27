@@ -30,10 +30,12 @@ class Category(CategoryBase): # категория
         from_attributes = True # извлекаем атрибуты
 
 class TransactionBase(BaseModel): # транзакция
+    title: str
     amount: float # сумма
     type: TransactionType # тип
     description: Optional[str] = None # описание
     category_id: int # id категории
+    date: Optional[datetime] = None
 
 class TransactionCreate(TransactionBase): # создание транзакции
     pass  # ничего не делать

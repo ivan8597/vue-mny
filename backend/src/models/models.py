@@ -28,13 +28,15 @@ class Category(Base): # категория
 class Transaction(Base): # транзакция
     __tablename__ = "transactions" # имя таблицы
 
-    id = Column(Integer, primary_key=True, index=True) # id
-    amount = Column(Float) # сумма
-    type = Column(Enum(TransactionType)) # тип
-    description = Column(String) # описание
-    date = Column(DateTime, default=datetime.utcnow) # дата
-    user_id = Column(Integer, ForeignKey("users.id")) # id пользователя
-    category_id = Column(Integer, ForeignKey("categories.id")) # id категории
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)  # название транзакции
+    amount = Column(Float, nullable=False)  # сумма
+    type = Column(Enum(TransactionType), nullable=False)  # тип
+    description = Column(String)  # описание
+    date = Column(DateTime, default=datetime.utcnow)  # дата
+    category_id = Column(Integer, ForeignKey("categories.id"))  # id категории
+    user_id = Column(Integer, ForeignKey("users.id"))  # id пользователя
 
-    user = relationship("User", back_populates="transactions") # пользователь
-    category = relationship("Category", back_populates="transactions") # категория
+    # Связи с другими таблицами
+    category = relationship("Category", back_populates="transactions")
+    user = relationship("User", back_populates="transactions")

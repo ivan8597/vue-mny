@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Ждем доступности базы данных
-./wait-for-db.sh postgres
+# Ждем готовности базы данных
+./wait-for-db.sh db
 
 # Применяем миграции
 alembic upgrade head

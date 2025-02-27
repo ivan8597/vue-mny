@@ -16,8 +16,11 @@ from ..utils.auth import ( # импорт функций
 
 router = APIRouter()
 
-@router.post("/auth/register", response_model=schemas.User) # регистрация пользователя
-def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)): # регистрация пользователя
+@router.post("/register", response_model=schemas.User) # регистрация пользователя
+def register_user(
+    user: schemas.UserCreate,
+    db: Session = Depends(get_db)
+):
     """Регистрация нового пользователя"""
     # Проверяем, существует ли пользователь
     db_user = db.query(models.User).filter(models.User.email == user.email).first() # проверка на существование пользователя
@@ -39,7 +42,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)): # р
     db.refresh(db_user) # обновление пользователя
     return db_user
 
-@router.post("/auth/token") # авторизация пользователя
+@router.post("/token") # авторизация пользователя
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(), # форма запроса
     db: Session = Depends(get_db) # база данных

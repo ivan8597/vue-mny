@@ -8,7 +8,7 @@ import os
 load_dotenv()
 
 # Получение URL базы данных из переменных окружения
-DATABASE_URL = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://") 
+DATABASE_URL = "postgresql://postgres:postgres@db:5432/finance_db"
 
 # Создание движка базы данных
 engine = create_engine(DATABASE_URL)
