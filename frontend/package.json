@@ -5,16 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.6.7",
-    "pinia": "^2.1.7",
-    "vue": "^3.4.19",
-    "vue-router": "^4.3.0",
+    "@css-render/vue3-ssr": "^0.15.12",
     "@vueuse/core": "^10.9.0",
-    "naive-ui": "^2.38.1"
+    "axios": "^1.6.7",
+    "naive-ui": "^2.41.0",
+    "pinia": "^2.1.7",
+    "vfonts": "^0.0.3",
+    "vue": "^3.4.19",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",

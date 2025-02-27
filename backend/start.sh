@@ -1,10 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 
-# Ждем готовности базы данных
-./wait-for-db.sh db
+# Ждем, пока PostgreSQL будет доступен
+until PGPASSWORD=postgres psql -h db -U postgres -d finance_db -c '\q'; do
+  echo "Postgres недоступен - ожидание"
+  sleep 1
+done
+
+echo "Postgres готов!"
 
 # Применяем миграции
 alembic upgrade head
 
-# Запускаем сервер
-uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload 
+# Создаем начальные данные
+python -m app.initial_data
+
+# Запускаем приложение
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload 

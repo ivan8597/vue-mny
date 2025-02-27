@@ -16,6 +16,8 @@ services:
       interval: 5s  # Интервал между проверками
       timeout: 5s   # Таймаут ожидания ответа
       retries: 5    # Количество попыток
+    networks:
+      - app-network
 
   # Frontend сервис
   frontend:
@@ -28,6 +30,10 @@ services:
       - /app/node_modules
     depends_on:
       - backend
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    networks:
+      - app-network
 
   # Сервис backend приложения
   backend:
@@ -43,6 +49,8 @@ services:
     depends_on:  # Зависимость от сервиса БД
       db:
         condition: service_healthy  # Ждем, пока БД будет готова
+    networks:
+      - app-network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -54,6 +62,12 @@ services:
       - "5050:80"
     depends_on:
       - db
+    networks:
+      - app-network
 
 volumes:
   postgres_data:  # Том для данных PostgreSQL 
+
+networks:
+  app-network:
+    driver: bridge 
