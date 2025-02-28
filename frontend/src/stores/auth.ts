@@ -30,7 +30,11 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async (credentials: LoginCredentials) => {
     try {
       console.log('Login attempt with:', { email: credentials.username })
-      // Создаем FormData для отправки
+      if (token.value) {
+        console.log('Already have token:', token.value)
+        await router.push('/')
+        return
+      }
       const formData = new URLSearchParams()
       formData.append('grant_type', 'password')
       formData.append('username', credentials.username)

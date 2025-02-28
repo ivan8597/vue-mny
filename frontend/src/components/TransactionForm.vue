@@ -44,14 +44,15 @@ const message = useMessage()
 const formValue = ref({
   title: '',
   amount: 0,
-  type: 'expense' as 'income' | 'expense',
-  category_id: undefined as number | undefined,
+  type: 'EXPENSE' as 'INCOME' | 'EXPENSE',
+  category_id: null as number | null,
+  date: new Date().toISOString().split('T')[0],
   description: ''
 })
 
 const typeOptions = [
-  { label: 'Доход', value: 'income' },
-  { label: 'Расход', value: 'expense' }
+  { label: 'Доход', value: 'INCOME' },
+  { label: 'Расход', value: 'EXPENSE' }
 ]
 
 const categoryOptions = computed(() => {

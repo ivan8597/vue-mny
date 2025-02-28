@@ -14,7 +14,9 @@ def read_transactions(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
+    print(f"Getting transactions for user {current_user.id}")
     transactions = db.query(Transaction).filter(Transaction.user_id == current_user.id).all()
+    print(f"Found {len(transactions)} transactions")
     return transactions
 
 @router.get("/summary")

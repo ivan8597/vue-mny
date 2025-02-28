@@ -7,6 +7,19 @@ const api = axios.create({
   }
 })
 
+// Перехватчик для обработки ошибок
+api.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', error.response?.status, error.response?.data)
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token')
+      window.location.href = '/login'
+    }
+    return Promise.reject(error)
+  }
+)
+
 // Перехватчик для добавления токена
 api.interceptors.request.use(config => {
   console.log('Request URL:', config.url)

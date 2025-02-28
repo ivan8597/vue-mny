@@ -12,7 +12,7 @@
     "@css-render/vue3-ssr": "^0.15.12",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",
-    "naive-ui": "^2.41.0",
+    "naive-ui": "^2.38.1",
     "pinia": "^2.1.7",
     "vfonts": "^0.0.3",
     "vue": "^3.4.19",

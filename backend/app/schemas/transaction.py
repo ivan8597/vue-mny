@@ -1,21 +1,20 @@
 from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
+from datetime import date
+from app.models.transaction import TransactionType
 
 class TransactionBase(BaseModel):
     title: str
     amount: float
-    type: str
+    type: TransactionType
     category_id: int
-    description: Optional[str] = None
+    date: date
+    description: str | None = None
 
 class TransactionCreate(TransactionBase):
     pass
 
 class TransactionResponse(TransactionBase):
     id: int
-    date: datetime
-    user_id: int
 
     class Config:
         from_attributes = True 

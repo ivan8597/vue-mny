@@ -1,9 +1,9 @@
 from pydantic import BaseModel
-from typing import Literal
+from app.models.category import TransactionType
 
 class CategoryBase(BaseModel):
     name: str
-    type: Literal['income', 'expense']
+    type: TransactionType
 
 class CategoryCreate(CategoryBase):
     pass

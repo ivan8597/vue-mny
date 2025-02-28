@@ -12,11 +12,26 @@ router = APIRouter()
 @router.get("/", response_model=List[CategoryResponse])
 def read_categories(
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_user)
+    _current_user = Depends(get_current_user)
 ):
     """Получить все категории"""
-    categories = db.query(Category).all()
-    return categories
+    try:
+        print("Getting categories...")
+        categories = db.query(Category).all()
+        print(f"Found {len(categories)} categories")
+        if not categories:
+            print("No categories found, creating initial categories...")
+            from app.initial_data import create_initial_categories
+            create_initial_categories()
+            categories = db.query(Category).all()
+            print(f"Created {len(categories)} initial categories")
+        return categories
+    except Exception as e:
+        print(f"Error getting categories: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Internal server error: {str(e)}"
+        )
 
 @router.post("/", response_model=CategoryResponse)
 def create_category(
@@ -29,4 +44,13 @@ def create_category(
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
-    return db_category 
+    return db_category
+
+@router.get("/debug", response_model=List[dict])
+def debug_categories(
+    db: Session = Depends(get_db),
+    _current_user = Depends(get_current_user)
+):
+    """Отладочный эндпоинт для проверки категорий"""
+    categories = db.query(Category).all()
+    return [{"id": c.id, "name": c.name, "type": c.type} for c in categories] 

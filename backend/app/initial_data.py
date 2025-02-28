@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.category import Category
+from app.models.category import Category, TransactionType
 from app.database import SessionLocal
 
 def create_initial_categories():
@@ -9,18 +9,18 @@ def create_initial_categories():
         if db.query(Category).count() == 0:
             # Категории расходов
             expense_categories = [
-                {"name": "Продукты", "type": "expense"},
-                {"name": "Транспорт", "type": "expense"},
-                {"name": "Развлечения", "type": "expense"},
-                {"name": "Коммунальные платежи", "type": "expense"},
-                {"name": "Здоровье", "type": "expense"}
+                {"name": "Продукты", "type": TransactionType.EXPENSE},
+                {"name": "Транспорт", "type": TransactionType.EXPENSE},
+                {"name": "Развлечения", "type": TransactionType.EXPENSE},
+                {"name": "Коммунальные платежи", "type": TransactionType.EXPENSE},
+                {"name": "Здоровье", "type": TransactionType.EXPENSE}
             ]
             
             # Категории доходов
             income_categories = [
-                {"name": "Зарплата", "type": "income"},
-                {"name": "Фриланс", "type": "income"},
-                {"name": "Инвестиции", "type": "income"}
+                {"name": "Зарплата", "type": TransactionType.INCOME},
+                {"name": "Фриланс", "type": TransactionType.INCOME},
+                {"name": "Инвестиции", "type": TransactionType.INCOME}
             ]
             
             # Добавляем все категории
