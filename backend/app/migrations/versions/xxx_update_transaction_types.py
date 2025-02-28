@@ -8,15 +8,15 @@ from alembic import op
 import sqlalchemy as sa
 
 def upgrade():
-    # Обновляем значения в таблице на верхний регистр
-    op.execute("UPDATE transactions SET type = UPPER(type)")
+    # Обновляем значения в таблице на нижний регистр
+    op.execute("UPDATE transactions SET type = LOWER(type)")
     
     # Пересоздаем enum тип
     op.execute("""
         DO $$ 
         BEGIN
             DROP TYPE IF EXISTS transactiontype CASCADE;
-            CREATE TYPE transactiontype AS ENUM ('INCOME', 'EXPENSE');
+            CREATE TYPE transactiontype AS ENUM ('income', 'expense');
         END $$;
     """)
     

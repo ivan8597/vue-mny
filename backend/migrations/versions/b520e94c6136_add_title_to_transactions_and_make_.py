@@ -23,7 +23,7 @@ def upgrade() -> None:
     op.create_table('categories',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('type', sa.Enum('INCOME', 'EXPENSE', name='transactiontype'), nullable=True),
+    sa.Column('type', sa.Enum('income', 'expense', name='transactiontype'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
@@ -41,7 +41,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('amount', sa.Float(), nullable=False),
-    sa.Column('type', sa.Enum('INCOME', 'EXPENSE', name='transactiontype'), nullable=False),
+    sa.Column('type', sa.Enum('income', 'expense', name='transactiontype'), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('date', sa.DateTime(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),

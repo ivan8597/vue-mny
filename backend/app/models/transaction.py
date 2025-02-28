@@ -4,8 +4,8 @@ from app.database import Base
 import enum
 
 class TransactionType(str, enum.Enum):
-    INCOME = "INCOME"
-    EXPENSE = "EXPENSE"
+    income = "income"
+    expense = "expense"
 
 class Transaction(Base):
     __tablename__ = "transactions"

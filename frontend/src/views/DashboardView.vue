@@ -54,6 +54,7 @@ import {
 import { useAuthStore } from '@/stores/auth'
 import { useTransactionsStore } from '@/stores/transactions'
 import { useCategoriesStore } from '@/stores/categories'
+import type { Transaction } from '@/types'
 import TransactionList from '@/components/TransactionList.vue'
 import TransactionForm from '@/components/TransactionForm.vue'
 import TransactionSummary from '@/components/TransactionSummary.vue'

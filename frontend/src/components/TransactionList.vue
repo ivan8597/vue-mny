@@ -22,10 +22,14 @@ const columns = [
     title: 'Тип',
     key: 'type',
     render(row: Transaction) {
+      const type = row.type
+      const label = type === 'income' ? 'Доход' : 'Расход'
       return h(
         NTag,
-        { type: row.type === 'income' ? 'success' : 'error' },
-        { default: () => row.type === 'income' ? 'Доход' : 'Расход' }
+        {
+          type: type === 'income' ? 'success' : 'error'
+        },
+        { default: () => label }
       )
     }
   },
@@ -33,7 +37,7 @@ const columns = [
   { title: 'Категория', key: 'category_name' }
 ]
 
-defineProps<{
+const props = defineProps<{
   transactions: Transaction[]
 }>()
 </script> 

@@ -5,8 +5,8 @@ import enum # перечисление
 from ..database.database import Base # база данных
 
 class TransactionType(enum.Enum): # тип транзакции
-    INCOME = "income" # доход
-    EXPENSE = "expense" # расход
+    income = "income" # доход
+    expense = "expense" # расход
 
 class User(Base): # пользователь
     __tablename__ = "users" # имя таблицы
