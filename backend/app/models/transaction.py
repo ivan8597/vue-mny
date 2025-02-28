@@ -1,11 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date, Enum
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enum
 from sqlalchemy.sql import func
 from app.database import Base
-import enum
-
-class TransactionType(str, enum.Enum):
-    income = "income"
-    expense = "expense"
+from .transaction_type import TransactionType
 
 class Transaction(Base):
     __tablename__ = "transactions"
@@ -15,6 +11,6 @@ class Transaction(Base):
     amount = Column(Float, nullable=False)
     type = Column(Enum(TransactionType), nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
-    date = Column(Date, nullable=False)
+    date = Column(DateTime, nullable=False)
     description = Column(String)
     user_id = Column(Integer, ForeignKey("users.id")) 

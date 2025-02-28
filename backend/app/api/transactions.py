@@ -6,6 +6,7 @@ from sqlalchemy import func
 from app.database import get_db
 from app.models.transaction import Transaction
 from app.models.user import User
+from app.models.transaction import TransactionType
 from app.schemas.transaction import TransactionCreate, TransactionResponse
 from app.api.deps import get_current_user
 
@@ -26,12 +27,27 @@ def get_summary(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    # TODO: Реализовать получение сводки
-    return {
+    query = db.query(
+        Transaction.type,
+        func.sum(Transaction.amount).label('total')
+    ).filter(
+        Transaction.user_id == current_user.id
+    ).group_by(Transaction.type)
+    
+    result = {
         "income": 0,
         "expense": 0,
         "balance": 0
     }
+
+    for type_, amount in query.all():
+        if type_ == TransactionType.income:
+            result["income"] = float(amount)
+        elif type_ == TransactionType.expense:
+            result["expense"] = float(amount)
+
+    result["balance"] = result["income"] - result["expense"]
+    return result
 
 @router.post("/", response_model=TransactionResponse)
 def create_transaction(
@@ -62,9 +78,9 @@ def get_transactions_summary(
     }
 
     for type, amount in query.all():
-        if type == "income":
+        if type == TransactionType.income:
             result["income"] = amount
-        elif type == "expense":
+        elif type == TransactionType.expense:
             result["expense"] = amount
 
     return result 

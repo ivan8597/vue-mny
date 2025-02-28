@@ -1,10 +1,6 @@
 from sqlalchemy import Column, Integer, String, Enum
 from app.database import Base
-import enum
-
-class TransactionType(str, enum.Enum):
-    income = "income"
-    expense = "expense"
+from .transaction_type import TransactionType
 
 class Category(Base):
     __tablename__ = "categories"

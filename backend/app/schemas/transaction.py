@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
-from app.models.transaction import TransactionType
+from app.models.transaction_type import TransactionType
 
 class TransactionBase(BaseModel):
     title: str
