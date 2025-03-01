@@ -27,4 +27,10 @@ export interface CreateTransactionDTO {
   type: 'income' | 'expense'
   category_id: number
   description?: string
+}
+
+export interface Summary {
+  total_income: number
+  total_expenses: number
+  balance: number
 } 

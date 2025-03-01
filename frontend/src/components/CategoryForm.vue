@@ -1,30 +1,37 @@
 <template>
-  <n-form
-    ref="formRef"
-    :model="formValue"
-    :rules="rules"
-    @submit.prevent="handleSubmit"
-  >
-    <n-form-item path="name" label="Название">
-      <n-input v-model:value="formValue.name" />
+  <n-form ref="formRef" :model="formData" :rules="rules">
+    <n-form-item label="Название" path="name">
+      <n-input v-model:value="formData.name" placeholder="Введите название категории" />
     </n-form-item>
-    <n-form-item path="type" label="Тип">
-      <n-select v-model:value="formValue.type" :options="typeOptions" />
+    <n-form-item label="Тип" path="type">
+      <n-select 
+        v-model:value="formData.type"
+        :options="typeOptions"
+        placeholder="Выберите тип категории"
+      />
     </n-form-item>
-    <n-button type="primary" @click="handleSubmit">Создать</n-button>
+    <n-space justify="end">
+      <n-button type="primary" @click="handleSubmit">
+        Создать
+      </n-button>
+    </n-space>
   </n-form>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { TransactionType } from '@/types'
-import { useCategoriesStore } from '@/stores/categories'
-import { useMessage } from 'naive-ui'
+import type { FormInst } from 'naive-ui'
+import { 
+  NForm,
+  NFormItem,
+  NInput,
+  NSelect,
+  NButton,
+  NSpace
+} from 'naive-ui'
 
-const categoriesStore = useCategoriesStore()
-const message = useMessage()
-
-const formValue = ref({
+const formRef = ref<FormInst | null>(null)
+const formData = ref({
   name: '',
   type: 'expense' as 'income' | 'expense'
 })
@@ -35,16 +42,30 @@ const typeOptions = [
 ]
 
 const rules = {
-  name: { required: true, message: 'Введите название категории' }
+  name: {
+    required: true,
+    message: 'Пожалуйста, введите название категории',
+    trigger: 'blur'
+  },
+  type: {
+    required: true,
+    message: 'Пожалуйста, выберите тип категории',
+    trigger: 'change'
+  }
 }
 
-const handleSubmit = async () => {
-  try {
-    await categoriesStore.createCategory(formValue.value)
-    message.success('Категория создана')
-  } catch (error) {
-    message.error('Ошибка при создании категории')
-  }
+const emit = defineEmits(['submit'])
+
+const handleSubmit = () => {
+  formRef.value?.validate((errors) => {
+    if (!errors) {
+      emit('submit', formData.value)
+      formData.value = {
+        name: '',
+        type: 'expense'
+      }
+    }
+  })
 }
 </script>
 

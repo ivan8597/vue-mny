@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import DashboardView from '@/views/DashboardView.vue'
+import CategoriesView from '@/views/CategoriesView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      component: () => import('../views/DashboardView.vue'),
+      name: 'dashboard',
+      component: DashboardView,
       meta: { requiresAuth: true }
     },
     {
@@ -16,6 +19,12 @@ const router = createRouter({
     {
       path: '/register',
       component: () => import('../views/RegisterView.vue')
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: CategoriesView,
+      meta: { requiresAuth: true }
     }
   ]
 })

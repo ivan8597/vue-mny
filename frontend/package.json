@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.12",
+    "@types/chart.js": "^2.9.41",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",
+    "chart.js": "^4.4.8",
+    "dayjs": "^1.11.13",
     "naive-ui": "^2.38.1",
     "pinia": "^2.1.7",
     "vfonts": "^0.0.3",
     "vue": "^3.4.19",
+    "vue-chartjs": "^5.3.2",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {

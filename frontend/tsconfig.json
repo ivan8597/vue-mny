@@ -14,17 +14,30 @@
     "noEmit": true,
     "jsx": "preserve",
 
-    /* Type Checking */
+    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    /* Paths */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": [
+      "dayjs"
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/components/**/*.vue",
+    "!src/components/HelloWorld.vue",
+    "!src/components/TheWelcome.vue",
+    "!src/components/WelcomeItem.vue"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

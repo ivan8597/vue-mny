@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from app.initial_data import create_initial_categories
 from app.api.auth import router as auth_router
-from app.api.categories import router as categories_router
 from app.api.transactions import router as transactions_router
+from app.api.categories import router as categories_router
 from app.database import SessionLocal
 
 app = FastAPI()
