@@ -33,4 +33,21 @@ export interface Summary {
   total_income: number
   total_expenses: number
   balance: number
+}
+
+export interface SavingsGoal {
+  id: number
+  name: string
+  target_amount: number
+  current_amount: number
+  deadline?: string
+  created_at: string
+  user_id: number
+}
+
+export interface CreateSavingsGoalDTO {
+  name: string
+  target_amount: number
+  current_amount?: number
+  deadline?: string
 } 

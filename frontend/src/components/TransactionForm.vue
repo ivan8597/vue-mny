@@ -17,20 +17,21 @@
     <n-form-item path="category_id" label="Категория">
       <n-select v-model:value="formValue.category_id" :options="categoryOptions" />
     </n-form-item>
-    <n-form-item path="description" label="Описание">
+    <!-- <n-form-item path="description" label="Описание">
       <n-input v-model:value="formValue.description" type="textarea" />
-    </n-form-item>
+    </n-form-item> -->
     <n-button type="primary" @click="handleSubmit">Создать</n-button>
   </n-form>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCategoriesStore } from '@/stores/categories'
 import { useTransactionsStore } from '@/stores/transactions'
 import { useMessage } from 'naive-ui'
 import { AxiosError } from 'axios'
-import type { CreateTransactionDTO } from '@/types'
+import type { CreateTransactionDTO, TransactionType } from '@/types'
+import dayjs from 'dayjs'
 // import type { Category } from '@/types'
 
 const props = defineProps<{
@@ -43,10 +44,10 @@ const message = useMessage()
 
 const formValue = ref({
   title: '',
-  amount: 0,
-  type: 'expense' as 'income' | 'expense',
-  category_id: null as number | null,
-  date: new Date().toISOString().split('T')[0],
+  amount: null,
+  type: 'expense' as TransactionType,
+  category_id: null,
+  date: dayjs().format('YYYY-MM-DD'),
   description: ''
 })
 
@@ -54,6 +55,16 @@ const typeOptions = [
   { label: 'Доход', value: 'income' },
   { label: 'Расход', value: 'expense' }
 ]
+
+// Добавим наблюдатель за изменением типа транзакции
+watch(() => formValue.value.type, () => {
+  // При изменении типа сбрасываем выбранную категорию, т.к. категории фильтруются по типу
+  formValue.value.category_id = null
+  // После изменения типа убедимся, что категории загружены
+  if (categoriesStore.categories.length === 0) {
+    categoriesStore.fetchCategories()
+  }
+})
 
 const categoryOptions = computed(() => {
   console.log('Categories:', categoriesStore.categories)
@@ -64,7 +75,13 @@ const categoryOptions = computed(() => {
   }
   const filtered = categoriesStore.categories.filter(c => c.type === formValue.value.type)
   console.log('Filtered categories:', filtered)
-  return filtered.map(c => ({ label: c.name, value: c.id }))
+  return filtered.map(c => ({ 
+    label: c.name, 
+    value: c.id,
+    // Добавляем дополнительную информацию для отладки
+    disabled: false,
+    key: `${c.id}-${c.type}` 
+  }))
 })
 
 onMounted(async () => {
@@ -85,7 +102,11 @@ const handleSubmit = async () => {
   try {
     await formRef.value?.validate()
     console.log('Submitting transaction:', formValue.value)
-    await transactionsStore.createTransaction(formValue.value as CreateTransactionDTO)
+    await transactionsStore.createTransaction({
+      ...formValue.value,
+      amount: formValue.value.amount || 0,
+      category_id: formValue.value.category_id || 0
+    } as CreateTransactionDTO)
     props.showTransactionModal.value = false
     message.success('Транзакция создана')
   } catch (error) {

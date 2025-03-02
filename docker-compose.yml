@@ -46,6 +46,7 @@ services:
       - "8000:8000"
     environment:  # Переменные окружения для подключения к БД
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/finance_db
+      - DATABASE_HOST=db
     depends_on:  # Зависимость от сервиса БД
       db:
         condition: service_healthy  # Ждем, пока БД будет готова

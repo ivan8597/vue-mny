@@ -8,8 +8,8 @@ export interface Transaction {
   amount: number
   type: TransactionType
   category_id: number
-  date: string
-  description: string
+  description?: string
+  date: string | Date
   user_id: number
 }
 
@@ -20,4 +20,5 @@ export interface CreateTransactionDTO {
   category_id: number | null
   date: string
   description: string
-} 
+}
+

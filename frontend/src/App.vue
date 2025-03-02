@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { NMessageProvider, NConfigProvider } from 'naive-ui'
+import { NMessageProvider, NConfigProvider, NDialogProvider, NNotificationProvider, NLoadingBarProvider } from 'naive-ui'
 </script>
 
 <template>
   <n-message-provider>
-    <n-config-provider>
-      <router-view />
-    </n-config-provider>
+    <n-dialog-provider>
+      <n-notification-provider>
+        <n-config-provider>
+          <n-loading-bar-provider>
+            <router-view />
+          </n-loading-bar-provider>
+        </n-config-provider>
+      </n-notification-provider>
+    </n-dialog-provider>
   </n-message-provider>
 </template>
 
@@ -71,5 +77,20 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.n-card {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.n-modal {
+  max-width: 800px !important;
 }
 </style>

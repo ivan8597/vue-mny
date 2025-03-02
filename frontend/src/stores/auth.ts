@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import axios from 'axios'
+// import axios from 'axios'
 import api from '@/api'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
+
 
 interface LoginCredentials {
   username: string
@@ -40,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
       formData.append('username', credentials.username)
       formData.append('password', credentials.password)
       
-      const response = await api.post('/api/auth/token', formData, {
+      const response = await api.post('/auth/token', formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -67,7 +68,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const register = async (userData: RegisterData) => {
     try {
-      const response = await api.post('/api/auth/register', userData)
+      await api.post('/auth/register', userData)
       await login({ username: userData.email, password: userData.password })
     } catch (error) {
       console.error('Register error:', error)

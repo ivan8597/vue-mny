@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Ждем, пока PostgreSQL будет доступен
-until PGPASSWORD=postgres psql -h db -U postgres -d finance_db -c '\q'; do
+# Проверяем доступность базы данных
+until PGPASSWORD=postgres psql -h $DATABASE_HOST -U postgres -d finance_db -c '\q'; do
   echo "Postgres недоступен - ожидание"
   sleep 1
 done

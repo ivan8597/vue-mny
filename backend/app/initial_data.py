@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.category import Category
 from app.models.category import TransactionType
+from app.models.savings_goal import SavingsGoal
 
 def create_initial_categories():
     db = SessionLocal()

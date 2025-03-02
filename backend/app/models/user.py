@@ -12,4 +12,5 @@ class User(Base):
 
     transactions = relationship("Transaction", back_populates="user")
     categories = relationship("Category", back_populates="user")
+    savings_goals = relationship("SavingsGoal", back_populates="user", lazy="dynamic")
   
