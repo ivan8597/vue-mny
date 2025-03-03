@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
 from sqlalchemy import func
+from fastapi.responses import JSONResponse
+from datetime import datetime
 
 from app.database import get_db
 from app.models.transaction import Transaction
@@ -15,10 +17,22 @@ router = APIRouter()
 @router.get("/", response_model=List[TransactionResponse])
 def read_transactions(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    start_date: str | None = Query(None),
+    end_date: str | None = Query(None)
 ):
     print(f"Getting transactions for user {current_user.id}")
-    transactions = db.query(Transaction).filter(Transaction.user_id == current_user.id).all()
+    query = db.query(Transaction).filter(Transaction.user_id == current_user.id)
+
+    if start_date:
+        start = datetime.strptime(start_date, "%Y-%m-%d")
+        query = query.filter(Transaction.date >= start)
+
+    if end_date:
+        end = datetime.strptime(end_date, "%Y-%m-%d")
+        query = query.filter(Transaction.date <= end)
+
+    transactions = query.all()
     print(f"Found {len(transactions)} transactions")
     return transactions
 
@@ -49,7 +63,7 @@ def get_summary(
     result["balance"] = result["income"] - result["expense"]
     return result
 
-@router.post("/", response_model=TransactionResponse)
+@router.post("/", response_model=TransactionResponse, status_code=201)
 def create_transaction(
     transaction: TransactionCreate,
     db: Session = Depends(get_db),

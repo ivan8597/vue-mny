@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  backend-test:
+    environment:
+      DATABASE_URL: "sqlite:///:memory:"
+      TESTING: "1"
+    volumes:
+      - ./backend:/app:rw
+    command: ["bash", "run_tests.sh"] 

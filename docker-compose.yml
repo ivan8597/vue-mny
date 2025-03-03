@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   # Сервис базы данных PostgreSQL
   db:
@@ -7,10 +8,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=finance_db
+      # Добавляем тестовую БД
+      - POSTGRES_MULTIPLE_DATABASES=finance_db,money_tracker_test
     ports:  # Проброс портов: локальный_порт:порт_в_контейнере
       - "5432:5432"
     volumes:  # Монтирование тома для сохранения данных между перезапусками
       - postgres_data:/var/lib/postgresql/data
+      # Добавляем скрипт для создания нескольких БД
+      - ./scripts/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/create-multiple-postgresql-databases.sh
     healthcheck:  # Проверка здоровья контейнера
       test: ["CMD-SHELL", "pg_isready -U postgres"]  # Команда для проверки готовности БД
       interval: 5s  # Интервал между проверками
@@ -31,7 +36,7 @@ services:
     depends_on:
       - backend
     environment:
-      - VITE_API_URL=http://localhost:8000/api
+      - VITE_API_URL=/api
     networks:
       - app-network
 
@@ -65,6 +70,13 @@ services:
       - db
     networks:
       - app-network
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.test
+    environment:
+      - TESTING=1  # Включаем режим тестирования
 
 volumes:
   postgres_data:  # Том для данных PostgreSQL 

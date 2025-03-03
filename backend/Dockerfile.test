@@ -1,0 +1,25 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Установка переменных окружения перед установкой зависимостей
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV TESTING=1
+
+# Добавляем переменную для использования SQLite вместо PostgreSQL
+ENV DATABASE_URL=sqlite:///:memory:
+
+# Устанавливаем psycopg2, но будем использовать sqlite
+COPY requirements.txt requirements-test.txt ./
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir -r requirements-test.txt
+
+# Копирование исходного кода
+COPY . .
+
+# Делаем скрипт исполняемым
+RUN chmod +x run_tests.sh
+
+# Запуск через специальный скрипт для обеспечения правильной среды
+CMD ["bash", "run_tests.sh"] 

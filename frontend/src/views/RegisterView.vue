@@ -20,6 +20,9 @@
             placeholder="Введите пароль"
           />
         </n-form-item>
+        <n-form-item path="username" label="Логин">
+          <n-input v-model:value="formValue.username" placeholder="Введите логин" />
+        </n-form-item>
         <n-button type="primary" block @click="handleSubmit">
           Зарегистрироваться
         </n-button>
@@ -47,7 +50,8 @@ const message = useMessage()
 const formValue = ref({
   name: '',
   email: '',
-  password: ''
+  password: '',
+  username: ''
 })
 
 const rules = {
@@ -60,19 +64,20 @@ const rules = {
 }
 
 const handleSubmit = async () => {
+  console.log('Sending registration data:', formValue.value)
   try {
     await authStore.register({
       email: formValue.value.email,
       password: formValue.value.password,
-      name: formValue.value.name
+      name: formValue.value.name,
+      username: formValue.value.username
     })
-    message.success('Регистрация успешна')
+    router.push('/login')
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      message.error(error.response?.data?.detail || 'Ошибка регистрации')
-    } else {
-      message.error('Ошибка регистрации')
+      console.log('Registration validation error:', error.response?.data)
     }
+    message.error('Ошибка при регистрации')
   }
 }
 </script>

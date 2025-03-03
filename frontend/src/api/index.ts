@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({ 
-  // @ts-ignore
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: '/api',  // Используем относительный путь для проксирования через nginx
   headers: {
     'Content-Type': 'application/json'
   }
